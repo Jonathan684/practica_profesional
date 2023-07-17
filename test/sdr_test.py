@@ -6,7 +6,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
 import ast
-
+import sys
 # Read the file pps_docker/ADALM-PLUTO-SDR/output/datos.txt
 with open("../ADALM-PLUTO-SDR/output/datos.txt", "r") as file:
     content = file.read()
@@ -43,6 +43,9 @@ for i, linea in enumerate(lineas):
     if i == 2:
         amplitud = int(elementos[1], 16)
         #print("amplitud",amplitud)    
+    if i == 3:
+        vec=elementos[1].split("_")
+        TxBufferSize = int(vec[0])**int(vec[1])-1
     if i == 4:
         vec=elementos[1].split("_")
         RxBufferSize = int(vec[0])**int(vec[1])-1
@@ -52,15 +55,30 @@ for i, linea in enumerate(lineas):
 
 print("*"*20)
 print("Longitud_del_pulso",Longitud_del_pulso)
+LG = Longitud_del_pulso
 print("PRI",PRI)
 print("amplitud",amplitud)
 print("RxBufferSize",RxBufferSize)
+print("TxBufferSize",TxBufferSize)
 print("*"*20)
-
+N = RxBufferSize
 count = 0
 signal = np.zeros(N)
 signal_tx = np.zeros((1, N), dtype=complex)  # Inicializar el array de pulsos
-signal_rx = ast.literal_eval(content)
+
+try:
+    # Tu código que genera el error
+    signal_rx = ast.literal_eval(content)
+    
+    # Resto de tu código
+    # ...
+    
+except (SyntaxError, ValueError) as e:
+    # Manejo del error
+    print("Ocurrió un error al evaluar la expresión literal datos.txt dañado")
+    sys.exit()
+#signal_rx = ast.literal_eval(content)
+
 max = np.real(signal_rx).argmax()
 val_max = np.real(signal_rx)[max]
 #print("val_max..",val_max)
@@ -100,7 +118,7 @@ def plotSignal(signal_tx,signal_rx,max):
     
     ax1.set_ylabel('Amplitude')
     ax1.set_xlabel('samples')
-    ax1.set_title('In-phase Component of the Signal_rx and tx')
+    ax1.set_title('In-phase Component of the Signal_rx and tx     [size buffer_rx :{} size buffer_tx :{} PRI:{} LG:{}]'.format(RxBufferSize,TxBufferSize,PRI,LG))
     ax1.grid()
     
     # Subplot 2 - Transmitted Q component
@@ -114,11 +132,11 @@ def plotSignal(signal_tx,signal_rx,max):
     ax2.grid()
     
     #ZOOM
-    medio = max# int((2**18)/2) 
+    medio = N /2 #max# int((2**18)/2) 
     #medio = int((2**18)/2) 
     #medio = PRI
-    mini = medio - 20000
-    maxim = medio + 20000
+    mini = medio - 5000
+    maxim = medio + 5000
 
     # Subplot 3 - Component in quadrature (first 1000 samples)
     ax3 = fig.add_subplot(2, 2, 3)

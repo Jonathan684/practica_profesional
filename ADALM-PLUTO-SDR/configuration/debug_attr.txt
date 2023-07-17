@@ -1,7 +1,7 @@
 Longitud_del_pulso 1
-PRI 2_16
+PRI 2_12
 amplitud 0x0FFF
-TxBufferSize 2_16
-RxBufferSize 2_18
+TxBufferSize 2_12
+RxBufferSize 2_14
 rx 1
 loopback 1
