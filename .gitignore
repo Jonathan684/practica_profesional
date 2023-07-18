@@ -1,5 +1,5 @@
 #ignorar la carpeta .vscode
-vscode/
+vscode
 
 ADALM-PLUTO-SDR/output/datos.txt
 
