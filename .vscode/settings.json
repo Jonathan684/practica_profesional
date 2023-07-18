@@ -1,7 +1,0 @@
-{
-    "C_Cpp.errorSquiggles": "disabled",
-    "files.associations": {
-        "ad9361-iiostream.h": "c",
-        "signal.h": "c"
-    }
-}
