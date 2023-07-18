@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Signal_tx_rx</title>
+   <link rel="stylesheet" href="styles.css"> <!-- Importar el archivo CSS externo -->
+   
+</head>
+
+                  
+<body >
+
+<!-- ip  -->
+
+<form id="ipForm">
+   <label for="ipInput" id="ipLabel">Direccion IP del SDR:</label>
+   <input type="text" id="ipInput" name="ip" value="192.168.1.36">
+   <button type="button" id="ejecutarButton" onclick="ejecutarScript()">Ejecutar</button>
+</form>
+
+<script>
+   function ejecutarScript() {
+   var ip = document.getElementById("ipInput").value;
+
+   // Crear una nueva solicitud HTTP
+   var xhr = new XMLHttpRequest();
+   xhr.open("POST", "/ejecutar_sh", true);
+   xhr.setRequestHeader("Content-Type", "application/json");
+
+   // Enviar la dirección IP como datos JSON
+   xhr.send(JSON.stringify({ ip: ip }));
+
+   // Escuchar los eventos de carga y error de la solicitud
+   xhr.onload = function() {
+      if (xhr.status === 200) {
+         console.log("Archivo .sh ejecutado correctamente.");
+      } else {
+         console.log("Error al ejecutar el archivo .sh:", xhr.statusText);
+      }
+      
+   };
+
+   xhr.onerror = function() {
+      console.log("Error de conexión al ejecutar el archivo .sh.");
+   };
+
+   }
+</script>
+   <h1 id="hora"></h1>
+
+  <script>
+    function actualizarHora() {
+      var fecha = new Date(); 
+      var hora = fecha.getHours();
+      var minutos = fecha.getMinutes();
+
+    // Asegurarse de que los minutos tengan siempre 2 dígitos
+      if (minutos < 10) {
+      minutos = "0" + minutos;
+      }
+      
+
+      var horaActual = hora + ":" + minutos;
+
+      document.getElementById("hora").textContent = "Hora actual: " + horaActual;
+
+      setTimeout(actualizarHora, 1000); // Actualizar cada segundo
+    }
+
+    actualizarHora();
+  </script>
+   <h1 id="title">PRACTICA PROFESIONAL SUPERVISADA</h1>
+   
+   <img src="test.png" alt="Descripción de la imagen" >
+</body>
+</html>
