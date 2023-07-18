@@ -1,6 +1,8 @@
 #ignorar la carpeta .vscode
-/.vscode
-/.ADALM-PLUTO-SDR/output/datos.txt
+vscode/
+
+ADALM-PLUTO-SDR/output/datos.txt
+
 # Prerequisites
 *.d
 
