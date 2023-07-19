@@ -39,7 +39,7 @@ IIO context has 4 devices:
 				attr  9: rf_dc_offset_tracking_en value: 1
 				attr 10: rf_port_select value: A_BALANCED
 				attr 11: rf_port_select_available value: A_BALANCED B_BALANCED C_BALANCED A_N A_P B_N B_P C_N C_P TX_MONITOR1 TX_MONITOR2 TX_MONITOR1_2
-				attr 12: rssi value: 116.00 dB
+				attr 12: rssi value: 114.75 dB
 				attr 13: sampling_frequency value: 59999999
 				attr 14: sampling_frequency_available value: [1041666 1 61440000]
 			voltage3:  (output)
@@ -57,7 +57,7 @@ IIO context has 4 devices:
 				attr  0: external value: 0
 				attr  1: fastlock_load value: 0
 				attr  2: fastlock_recall ERROR: Invalid argument (-22)
-				attr  3: fastlock_save value: 0 239,239,239,239,239,239,239,239,239,239,239,239,239,239,239,239
+				attr  3: fastlock_save value: 0 111,111,111,111,111,111,111,111,111,111,111,111,111,111,111,111
 				attr  4: fastlock_store value: 0
 				attr  5: frequency value: 3499999998
 				attr  6: frequency_available value: [325000000 1 3800000000]
@@ -74,7 +74,7 @@ IIO context has 4 devices:
 				attr  7: scale value: 1.000000
 			temp0:  (input)
 			1 channel-specific attributes found:
-				attr  0: input value: 30702
+				attr  0: input value: 35088
 			voltage0:  (output)
 			10 channel-specific attributes found:
 				attr  0: filter_fir_en value: 1
@@ -94,7 +94,7 @@ IIO context has 4 devices:
 				attr  2: gain_control_mode_available value: manual fast_attack slow_attack hybrid
 				attr  3: offset value: 57
 				attr  4: quadrature_tracking_en value: 1
-				attr  5: raw value: 1440
+				attr  5: raw value: 1319
 				attr  6: rf_bandwidth value: 20000000
 				attr  7: rf_bandwidth_available value: [200000 1 56000000]
 				attr  8: rf_dc_offset_tracking_en value: 1
@@ -214,7 +214,7 @@ gain_step_calib_reg_val: 0 0 0 0 0
 				debug attr  6: gpo_set value: 0
 				debug attr  7: bist_tone value: 0
 				debug attr  8: bist_prbs value: 0
-				debug attr  9: loopback value: 0
+				debug attr  9: loopback value: 1
 				debug attr 10: initialize value: 0
 				debug attr 11: adi,bb-clk-change-dig-tune-enable value: 0
 				debug attr 12: adi,axi-half-dac-rate-enable value: 0
@@ -389,40 +389,40 @@ gain_step_calib_reg_val: 0 0 0 0 0
 		10 channels found:
 			voltage5: vccoddr (input)
 			2 channel-specific attributes found:
-				attr  0: raw value: 1841
+				attr  0: raw value: 1837
 				attr  1: scale value: 0.732421875
 			voltage0: vccint (input)
 			2 channel-specific attributes found:
-				attr  0: raw value: 1377
+				attr  0: raw value: 1378
 				attr  1: scale value: 0.732421875
 			voltage4: vccpaux (input)
 			2 channel-specific attributes found:
-				attr  0: raw value: 2453
+				attr  0: raw value: 2461
 				attr  1: scale value: 0.732421875
 			temp0:  (input)
 			3 channel-specific attributes found:
 				attr  0: offset value: -2219
-				attr  1: raw value: 2614
+				attr  1: raw value: 2650
 				attr  2: scale value: 123.040771484
 			voltage7: vrefn (input)
 			2 channel-specific attributes found:
-				attr  0: raw value: 2
+				attr  0: raw value: 3
 				attr  1: scale value: 0.732421875
 			voltage1: vccaux (input)
 			2 channel-specific attributes found:
-				attr  0: raw value: 2454
+				attr  0: raw value: 2458
 				attr  1: scale value: 0.732421875
 			voltage2: vccbram (input)
 			2 channel-specific attributes found:
-				attr  0: raw value: 1385
+				attr  0: raw value: 1381
 				attr  1: scale value: 0.732421875
 			voltage3: vccpint (input)
 			2 channel-specific attributes found:
-				attr  0: raw value: 1380
+				attr  0: raw value: 1379
 				attr  1: scale value: 0.732421875
 			voltage8:  (input)
 			2 channel-specific attributes found:
-				attr  0: raw value: 3292
+				attr  0: raw value: 3294
 				attr  1: scale value: 0.244140625
 			voltage6: vrefp (input)
 			2 channel-specific attributes found:
@@ -476,7 +476,7 @@ gain_step_calib_reg_val: 0 0 0 0 0
 		3 buffer-specific attributes found:
 				attr  0: data_available value: 0
 				attr  1: length_align_bytes value: 8
-				attr  2: watermark value: 1023
+				attr  2: watermark value: 2048
 		1 debug attributes found:
 				debug attr  0: direct_reg_access value: 0x90162
 		No trigger on this device
