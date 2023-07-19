@@ -22,7 +22,7 @@ cd ../run
 # Realiza un ping a la dirección IP
 ping -c 1 "$ip_address" >/dev/null 2>&1
 if [ $? -ne 0 ]; then
-    echo "Ping fallido. La conexión está siendo rechazada. Saliendo del script."
+    echo "Ping fallido. La conexión está siendo rechazada. Saliendo del script. Verificar VPN!"
     exit 1
 fi
 
@@ -37,10 +37,11 @@ sshpass -p "analog" scp ../configuration/rx_config.txt root@"$ip_address":/proye
 #sshpass -p "analog" scp ../output/datos.txt root@"$ip_address":/proyecto_radar/
 
 #echo "FIN ENVIO"
-sshpass -p "analog" scp ../sources/tx_rx root@"$ip_address":/proyecto_radar/
+sshpass -p "analog" scp ../sources/tx_rx_v2 root@"$ip_address":/proyecto_radar/
 echo "FINALIZADO DE LA CARGA DEL PROGRAMA"
 echo "EJECUTANDO PROGRAMA..."
-sshpass -p "analog" ssh -t root@"$ip_address" "cd /proyecto_radar/; exec ./tx_rx"
+#sshpass -p "analog" ssh -t root@"$ip_address" "cd /proyecto_radar/; exec ./tx_rx"
+sshpass -p "analog" ssh -t root@"$ip_address" "cd /proyecto_radar/; exec ./tx_rx_v2"
 echo "OBTENCION DE DATOS..."
 sshpass -p "analog" scp  root@"$ip_address":/proyecto_radar/datos.txt ../output
 echo "FIN SIMULACION"
