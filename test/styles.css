@@ -42,6 +42,9 @@ body {
     margin-top: 10px;
     margin-left: 10px;
  }
+ #age1{
+   color: blue;
+}
  
  #ipInput {
     margin-bottom: 10px;
@@ -60,4 +63,17 @@ body {
     color: black;
     font-weight: bold;
  }
- 
+
+
+/* Estilo para el botón cuando se seleccione */
+/* .button-container .test-button:active {
+   background-color: red;
+} */
+
+
+/* .button-container{
+   background-color: blue;
+} 
+#test1Button{
+   background-color: blue;
+}*/

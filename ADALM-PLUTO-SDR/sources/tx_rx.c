@@ -86,7 +86,7 @@ int main(){
        return 0;
     }
     settings_tx();
-    if(rx == true)settings_rx();
+    if(rx == 1)settings_rx();
     
     attr_debug();
 

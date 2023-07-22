@@ -74,7 +74,7 @@ int settings_rx();
 int main(){
     stop = false;
     signal(SIGINT, handle_sig);
-    ssize_t nbytes_tx;
+    ssize_t nbytes_tx,nbytes_rx;
 	char *p_dat, *p_end;
 	ptrdiff_t p_inc;
 
@@ -86,10 +86,10 @@ int main(){
        return 0;
     }
     settings_tx();
-    if(rx == true)settings_rx();
+    if(rx == 1)settings_rx();
     
     attr_debug();
-
+    //printf("RxBufferSize %d \n",(int)RxBufferSize);
     /*TRANSMITIR*/
     nbytes_tx = iio_buffer_push(txbuf);// solo es valida para buffer de salida.
     if (nbytes_tx < 0) printf("Error pushing buf %d\n", (int) nbytes_tx); 
@@ -115,20 +115,52 @@ int main(){
     if(rx == 1){
             
             int I_rx = 0;
-            double signal_i[(int)RxBufferSize];
-            double signal_q[(int)RxBufferSize];
+
+            float signal_i_0[(int)RxBufferSize];
+            float signal_q_0[(int)RxBufferSize];
+            float signal_i_1[(int)RxBufferSize];
+            float signal_q_1[(int)RxBufferSize];
+            float signal_i_2[(int)RxBufferSize];
+            float signal_q_2[(int)RxBufferSize];
+
+            //1 muestra del buffer
             iio_buffer_refill(rxbuf);
-            
             p_inc = iio_buffer_step(rxbuf);
             p_end = iio_buffer_end(rxbuf);
           
             for (p_dat = (char *)iio_buffer_first(rxbuf, rx0_i); p_dat < p_end; p_dat += p_inc) {     
-                    signal_q[I_rx] = (double) (((int16_t*)p_dat)[0]);
-                    signal_i[I_rx] = (double) (((int16_t*)p_dat)[1]);
+                    signal_i_0[I_rx] = (float) (((int16_t*)p_dat)[0]);//REAL I
+                    signal_q_0[I_rx] = (float) (((int16_t*)p_dat)[1]);//IMAG Q
                     I_rx ++;
             }
-            
-            FILE* archivo = fopen("datos.txt", "w"); // Abrir el archivo en modo binario
+            //2 muestra del buffer
+            nbytes_rx=iio_buffer_refill(rxbuf);
+            if (nbytes_rx < 0)printf("Error refilling buf\n");
+            I_rx = 0;
+            p_inc = iio_buffer_step(rxbuf);
+            p_end = iio_buffer_end(rxbuf);
+          
+            for (p_dat = (char *)iio_buffer_first(rxbuf, rx0_i); p_dat < p_end; p_dat += p_inc) {     
+                signal_i_1[I_rx] = (float) (((int16_t*)p_dat)[0]);
+                signal_q_1[I_rx] = (float) (((int16_t*)p_dat)[1]);
+                I_rx ++;
+            } 
+            //3 muestra del buffer
+            nbytes_rx=iio_buffer_refill(rxbuf);
+            if (nbytes_rx < 0)printf("Error refilling buf\n");
+            I_rx = 0;
+            p_inc = iio_buffer_step(rxbuf);
+            p_end = iio_buffer_end(rxbuf);
+          
+            for (p_dat = (char *)iio_buffer_first(rxbuf, rx0_i); p_dat < p_end; p_dat += p_inc) {     
+                signal_i_2[I_rx] = (float) (((int16_t*)p_dat)[0]);
+                signal_q_2[I_rx] = (float) (((int16_t*)p_dat)[1]);
+                I_rx ++;
+            } 
+
+
+
+            FILE* archivo = fopen("datos_0.txt", "w"); // Abrir el archivo en modo binario
             if (archivo == NULL) {
                 printf("Error al abrir el archivo.\n");
                 return 0;
@@ -136,8 +168,8 @@ int main(){
             fprintf(archivo,"[");
             char output[100];
             for(int j=0;j<(int)RxBufferSize;j++){
-                    if(signal_i[j]>=0)sprintf(output, " %f +%fj,",(signal_q[j]),(signal_i[j]));   
-                    else sprintf(output, " %f %fj,", (signal_q[j]), (signal_i[j]));
+                    if(signal_i_0[j]>=0)sprintf(output, " %f +%fj,",(signal_q_0[j]),(signal_i_0[j]));   
+                    else sprintf(output, " %f %fj,", (signal_q_0[j]), (signal_i_0[j]));
 
                     fseek(archivo, 0, SEEK_END);
                     fprintf(archivo,output);
@@ -145,9 +177,44 @@ int main(){
             }
             fprintf(archivo,"]");
             fclose(archivo);
+
+            //2
+            FILE* datos_1 = fopen("datos_1.txt", "w"); // Abrir el archivo en modo binario
+            if (datos_1 == NULL) {
+                printf("Error al abrir el archivo.\n");
+                return 0;
+            }
+            fprintf(datos_1,"[");
+            for(int i=0;i<(int)RxBufferSize;i++){
+                if(signal_i_1[i]>=0)sprintf(output, " %f +%fj,",(signal_q_1[i]),(signal_i_1[i]));   
+                else sprintf(output, " %f %fj,", (signal_q_1[i]), (signal_i_1[i]));
+                fseek(datos_1, 0, SEEK_END);
+                fprintf(datos_1,output);
+                memset(output, 0x00, 100);
+            }
+            fprintf(datos_1,"]");
+            fclose(datos_1);
+            //3
+            FILE* datos_2 = fopen("datos_2.txt", "w"); // Abrir el archivo en modo binario
+            if (datos_2 == NULL) {
+                printf("Error al abrir el archivo.\n");
+                return 0;
+            }
+            fprintf(datos_2,"[");
+            for(int j=0;j<(int)RxBufferSize;j++){
+                if(signal_i_2[j]>=0)sprintf(output, " %f +%fj,",(signal_q_2[j]),(signal_i_2[j]));   
+                else sprintf(output, " %f %fj,", (signal_q_2[j]), (signal_i_2[j]));
+                fseek(datos_2, 0, SEEK_END);
+                fprintf(datos_2,output);
+                memset(output, 0x00, 100);
+            }
+            fprintf(datos_2,"]");
+            fclose(datos_2);
+
+
     }
    
-    //printf(" FIN \n");
+    //printf(" FINISH\n");
     //while (!stop);
     //sleep(7);
     /*TRANSMITIR 0*/

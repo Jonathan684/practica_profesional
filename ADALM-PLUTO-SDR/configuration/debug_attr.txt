@@ -2,6 +2,6 @@ pulse_length 1
 PRI 2_14
 amplitud 0x0FFF
 TxBufferSize 2_14
-RxBufferSize 2_16
+RxBufferSize 2_18
 rx 1
 loopback 1

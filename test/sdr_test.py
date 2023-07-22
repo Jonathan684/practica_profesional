@@ -21,9 +21,10 @@ lineas = archivo.readlines()
 archivo.close()
 
 
-PRI = 2**15-1
-amplitud = 4080# 2 ** 14
-N = 2**18-1  # Replace N with the desired value of your signal length buffer rx
+#PRI = 2**15-1
+#amplitud = 4080# 2 ** 14
+#N = 2**18-1  # Replace N with the desired value of your signal length buffer rx
+
 
 
 # Imprime el contenido línea por línea
@@ -36,7 +37,6 @@ for i, linea in enumerate(lineas):
     if i == 1:
         #cadena = elementos[0]
         #valor = elementos[1]
-
         vec=elementos[1].split("_")
         PRI = int(vec[0])**int(vec[1])-1
         #print("PRI",PRI)
@@ -44,23 +44,26 @@ for i, linea in enumerate(lineas):
         amplitud = int(elementos[1], 16)
         #print("amplitud",amplitud)    
     if i == 3:
+        TxBufferSize_str = elementos[1]
+        TxBufferSize_str=TxBufferSize_str.replace("_", "^")
         vec=elementos[1].split("_")
         TxBufferSize = int(vec[0])**int(vec[1])-1
     if i == 4:
+        RxBufferSize_str = elementos[1]
+        RxBufferSize_str=RxBufferSize_str.replace("_", "^")
         vec=elementos[1].split("_")
         RxBufferSize = int(vec[0])**int(vec[1])-1
         #print("RxBufferSize",RxBufferSize)
         break    
     contador = i + 1
 
-print("*"*20)
-print("Longitud_del_pulso",Longitud_del_pulso)
-LG = Longitud_del_pulso
-print("PRI",PRI)
-print("amplitud",amplitud)
-print("RxBufferSize",RxBufferSize)
-print("TxBufferSize",TxBufferSize)
-print("*"*20)
+#print("*"*20)
+#print("Longitud_del_pulso",Longitud_del_pulso)
+# print("PRI",PRI)
+# print("amplitud",amplitud)
+# print("RxBufferSize",RxBufferSize)
+# print("TxBufferSize",TxBufferSize)
+# print("*"*20)
 N = RxBufferSize
 count = 0
 signal = np.zeros(N)
@@ -118,7 +121,7 @@ def plotSignal(signal_tx,signal_rx,max):
     
     ax1.set_ylabel('Amplitude')
     ax1.set_xlabel('samples')
-    ax1.set_title('In-phase Component of the Signal_rx and tx     [size buffer_rx :{} size buffer_tx :{} PRI:{} LG:{}]'.format(RxBufferSize,TxBufferSize,PRI,LG))
+    ax1.set_title('In-phase Component of the Signal_rx and tx     [size buffer_rx :{}({}) size buffer_tx :{}({}) PRI:{} LG:{}]'.format(RxBufferSize, RxBufferSize_str,TxBufferSize,TxBufferSize_str,PRI,Longitud_del_pulso))
     ax1.grid()
     
     # Subplot 2 - Transmitted Q component
@@ -135,8 +138,8 @@ def plotSignal(signal_tx,signal_rx,max):
     medio = N /2 #max# int((2**18)/2) 
     #medio = int((2**18)/2) 
     #medio = PRI
-    mini = medio - 5000
-    maxim = medio + 5000
+    mini = medio - 20000
+    maxim = medio + 20000
 
     # Subplot 3 - Component in quadrature (first 1000 samples)
     ax3 = fig.add_subplot(2, 2, 3)
@@ -164,7 +167,7 @@ def plotSignal(signal_tx,signal_rx,max):
     ax4.legend()
     plt.tight_layout()
     plt.savefig('test.png')
-#plt.style.use('dark_background')
+    #plt.style.use('dark_background')
     #plt.show()
 
 
@@ -174,11 +177,11 @@ val_min = np.real(signal_rx)[min]
 
 # print("Maximo :",np.real(signal_rx)[max])
 # print("Min :",np.real(signal_rx)[min])
-print("Posicion max:",max)
+#print("Posicion max:",max)
 # print("Posicion min:",min)
 # print("signal_rx:",len(signal_rx))
 
-print("signal_rx:",len(signal_rx))
+#print("signal_rx:",len(signal_rx))
 plotSignal(signal_tx,signal_rx,max)
 
 
