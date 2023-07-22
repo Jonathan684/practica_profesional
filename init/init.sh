@@ -22,7 +22,17 @@ echo $ip_address > ../test/ip.txt
 # Guardar el directorio actual en una variable
 current_dir=$(pwd)
 cd /root/.ssh
-echo "" > "known_hosts"
+
+# Verificar si el archivo known_hosts existe antes de eliminar su contenido
+if [ -f "known_hosts" ]; then
+    # Si el archivo existe, borrar su contenido
+    echo "" > "known_hosts"
+else
+    # Si el archivo no existe, mostrar un mensaje de advertencia
+    echo "El archivo known_hosts no existe. No se borrará el contenido."
+fi
+#echo "" > "known_hosts"
+
 # Regresar al directorio original
 cd "$current_dir"
 # Primero responde "yes" para la solicitud de confirmación y luego ingresa la contraseña
