@@ -1,13 +1,21 @@
 #!/bin/bash
-
-
+echo "#########################################"
+echo "#    ACTIVAR LA VPN ANTES DE INICIAR    #"
+echo "#########################################"
 # Pedir al usuario que ingrese un valor
-echo "Por favor, ingresar un IP:"
+echo "Ingresar un IP:"
 read ip_address
 #ip_address=$(head -n 1 ../test/ip.txt)
 username="root"
 password="analog"
 echo "El ip_address ingresado es: $ip_address"
+
+ping -c 1 "$ip_address" >/dev/null 2>&1
+if [ $? -ne 0 ]; then
+    echo "Ping fallido. La conexión está siendo rechazada. Saliendo del script."
+    exit 1
+fi
+
 echo $ip_address > ../test/ip.txt
 #verificar si existe la carpeta
 # Ruta al archivo known_hosts
@@ -17,7 +25,6 @@ cd /root/.ssh
 echo "" > "known_hosts"
 # Regresar al directorio original
 cd "$current_dir"
-pwd
 # Primero responde "yes" para la solicitud de confirmación y luego ingresa la contraseña
 sshpass -p "$password" ssh -t -o StrictHostKeyChecking=no "$username@$ip_address" 'echo "SSH connection successful"'
 if [ $? -eq 0 ]; then
@@ -27,20 +34,14 @@ else
     exit 1
 fi
 
-echo "====================================================="
-echo "                | CARGANDO FILTROS "$ip_address"|    "
-echo "                ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯    "
-echo "====================================================="
-
 # CARPETA DE TRABAJO /proyecto_radar ssh -t root@"$ip_address"
 sshpass -p "analog" ssh -t root@"$ip_address" "cd /; mkdir proyecto_radar"
 
-ping -c 1 "$ip_address" >/dev/null 2>&1
-if [ $? -ne 0 ]; then
-    echo "Ping fallido. La conexión está siendo rechazada. Saliendo del script."
-    exit 1
-fi
 
+echo "#########################################"
+echo "#   | CARGANDO FILTROS "$ip_address" |   #"
+echo "#   ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯   #"
+echo "#########################################"
 sshpass -p "analog" scp ../ADALM-PLUTO-SDR/filters/filter_1.txt root@"$ip_address":/proyecto_radar/
 sshpass -p "analog" scp ../ADALM-PLUTO-SDR/filters/filter_2.txt root@"$ip_address":/proyecto_radar/
 sshpass -p "analog" scp ../ADALM-PLUTO-SDR/filters/filter_3.txt root@"$ip_address":/proyecto_radar/
