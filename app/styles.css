@@ -27,7 +27,7 @@ body {
     position: fixed;
     top: 100px;
     left: 10px;
-    font-size: 24px;
+    font-size: 20px;
     color: black;
  }
  
@@ -64,7 +64,16 @@ body {
     font-weight: bold;
  }
 
+#firstLine {
+   font-size: 54px; /* Tamaño de letra en 24px */
+ }
 
+/* Estilo para el elemento con id "lastLine" */
+#lastLine {
+   font-size: 54px; /* Tamaño de letra en 18px */
+   font-weight: bold; /* Texto en negrita */
+   /*color: blue;  Color de texto azul */
+}
 /* Estilo para el botón cuando se seleccione */
 /* .button-container .test-button:active {
    background-color: red;

@@ -4,4 +4,4 @@ amplitud 0x0FFF
 TxBufferSize 2_14
 RxBufferSize 2_18
 rx 1
-loopback 1
+loopback 0

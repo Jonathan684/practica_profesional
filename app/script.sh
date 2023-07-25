@@ -21,7 +21,15 @@ sed -Ei 's/(loopback )[0-9]+/\1'"$loop"'/' "$archivo"
 # Resto del script...
 cd ../ADALM-PLUTO-SDR/run
 ./TX_RX.sh
-cd ../../test
+# Verificar el código de retorno del último comando ejecutado
+if [ $? -eq 0 ]; then
+    echo "TX and RX se ejecutó correctamente."
+else
+    echo "Error al ejecutar el script './TX_RX.sh'."
+    echo "Verificar VPN o IP!!!"
+    exit 1
+fi
+cd ../../app
 # #pwd
 
 if [ "$test" = "1" ]; then
@@ -34,5 +42,5 @@ else
     echo "ERROR script.SH"
     exit 1
 fi
-echo "Recargar la pagina"
+echo "## RECARGAR LA PAGINA ##"
 exit 1

@@ -1,6 +1,6 @@
 #!/bin/bash
-ip_address=$(head -n 1 ../../test/ip.txt)
-test=$(sed -n '2p' ../../test/ip.txt)
+ip_address=$(head -n 1 ../../app/ip.txt)
+test=$(sed -n '2p' ../../app/ip.txt)
 echo "====================================================="
 echo "                | MAKEFILE TX RX "$ip_address"|      "
 echo "                ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯       "
@@ -37,7 +37,7 @@ sshpass -p "analog" scp ../configuration/rx_config.txt root@"$ip_address":/proye
 #echo "FIN ENVIO"
 # Check the value of second_line and perform actions accordingly
 if [ "$test" = "1" ]; then
-    echo "Test 1"
+    #echo "Test 1"
     echo -n > ../output/datos.txt
     sshpass -p "analog" scp ../sources/tx_rx root@"$ip_address":/proyecto_radar/
     echo "FINALIZADO DE LA CARGA DEL PROGRAMA"
@@ -47,7 +47,7 @@ if [ "$test" = "1" ]; then
     sshpass -p "analog" scp  root@"$ip_address":/proyecto_radar/datos.txt ../output
     echo "FIN SIMULACION"
 elif [ "$test" = "2" ]; then
-    echo "Test 2"
+    #echo "Test 2"
     echo -n > ../output/datos_0.txt
     echo -n > ../output/datos_1.txt
     echo -n > ../output/datos_2.txt
@@ -59,7 +59,6 @@ elif [ "$test" = "2" ]; then
     sshpass -p "analog" scp  root@"$ip_address":/proyecto_radar/datos_0.txt ../output
     sshpass -p "analog" scp  root@"$ip_address":/proyecto_radar/datos_1.txt ../output
     sshpass -p "analog" scp  root@"$ip_address":/proyecto_radar/datos_2.txt ../output
-    
     echo "FIN SIMULACION"
     #sshpass -p "analog" scp  root@"$ip_address":/proyecto_radar/datos.txt ../output
 else

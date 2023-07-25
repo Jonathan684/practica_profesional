@@ -13,11 +13,29 @@
       <label for="ipInput" id="ipLabel">Direccion IP del SDR:</label>
       <input type="text" id="ipInput" name="ip" >
       <button type="button" id="ejecutarButton" onclick="ejecutarScript()">Ejecutar</button>
+      
    </form>
 
-   <h1 id="hora"></h1>
+   
+   <table>
+      <tr >
+          <th><h1 id="hora" style="font-size: 20px;"></h1></th>
+          <th>
+            <p id="firstLine" style="font-size: 20px;">
+            </p>
+            </th>
+            <th>
+               <p id="lastLine" style="font-size: 20px;">
+               </p>
+            </th>
+      </tr>
+      
+      <!-- Puedes agregar más filas aquí -->
+  </table>
    <h1 id="title">PRACTICA PROFESIONAL SUPERVISADA
    <div class="button-container">
+      
+      <script src="config.js"></script>
       <label for="test1">Test 1</label>
       <input type="radio" id="test1" name="test" value="1" onclick="selectTest('1')" >
       <label  for="test2">Test 2</label>
@@ -26,7 +44,9 @@
       <input type="radio" id="loop1" name="loop" value="1" onclick="selectLoopback('1')">
       <label  for="loop2">Loopback 1</label>
       <input type="radio" id="loop2" name="loop" value="2" onclick="selectLoopback('2')">
+      
    </div>
+  
    </h1>
 
    <img src="test.png" alt="Imagen no encontrada" >

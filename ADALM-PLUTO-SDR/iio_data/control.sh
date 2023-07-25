@@ -1,5 +1,5 @@
 #/sys/bus/iio/devices/iio:device0
-ip_address=$(cat ../../test/ip.txt)
+ip_address=$(cat ../../app/ip.txt)
 echo "=========================================="
 sshpass -p "analog" ssh -t root@"$ip_address" "cd /sys/bus/iio/devices/iio:device0; 
 echo -n "out_altvoltage1_TX_LO_frequency-:" ; cat out_altvoltage1_TX_LO_frequency

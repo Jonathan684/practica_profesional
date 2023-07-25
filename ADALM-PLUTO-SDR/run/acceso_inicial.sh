@@ -1,5 +1,5 @@
 #!/bin/bash
-ip_address=$(head -n 1 ../../test/ip.txt)
+ip_address=$(head -n 1 ../../app/ip.txt)
 ssh -t root@"$ip_address"
 # Crear carpeta /jonathan
 # mkdir

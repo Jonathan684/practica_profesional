@@ -4,14 +4,29 @@ import json
 
 # Nombre del archivo donde se guardarán los valores seleccionados
 archivo_valores = "valores.json"
+state_init = 0
+
+def init(ip):
+    result = subprocess.run(['./init_config.sh',ip])
+    # Verificar el código de retorno del proceso
+    
+    if result.returncode == 0:
+        # Si el script se ejecutó correctamente, iniciar el servidor
+        print('Script init_config.sh ejecutado correctamente. Se iniciará el servidor.')
+    else:
+        # Si hubo un error al ejecutar el script, mostrar un mensaje de error
+        print('Error al ejecutar init_config.sh. No se iniciará el servidor.')
+    
 
 class RequestHandler(SimpleHTTPRequestHandler):
     def do_POST(self):
+        global state_init
+
         content_length = int(self.headers['Content-Length'])
         post_data = self.rfile.read(content_length)
         data_str = post_data.decode('utf-8')
         
-        print("data_str", data_str)
+        #print("data_str", data_str)
         data = json.loads(data_str)
         guardar_valores(data)
         ip = data.get('ip', '')
@@ -29,6 +44,16 @@ class RequestHandler(SimpleHTTPRequestHandler):
             loop = '0'
         if loop1 == '0':
             loop = '1'    
+        #print("state_init :",state_init)
+        "si es el estado inicial debo cargar todo o si no coicide con el ip guardado tambien debe recargar"
+        with open("ip.txt", "r") as archivo:
+            ip_anterior = archivo.readline().strip()
+        
+        if state_init == 0 or ip != ip_anterior:
+            print("Cargar por primera vez o IP diferente.")
+            init(ip)
+            state_init = 1
+        
         # Ejecutar el archivo .sh pasando la dirección IP como argumento
         subprocess.run(['./script.sh', ip,test,loop])
         # Guardar los valores seleccionados en el archivo JSON
@@ -49,6 +74,7 @@ def run():
     server_address = ('', 8001)
     httpd = HTTPServer(server_address, RequestHandler)
     print('Servidor en ejecución en http://localhost:8001')
+    state_init = 0
     httpd.serve_forever()
 
 if __name__ == '__main__':

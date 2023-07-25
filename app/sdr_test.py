@@ -7,19 +7,30 @@ import matplotlib.pyplot as plt
 import matplotlib
 import ast
 import sys
-# Read the file pps_docker/ADALM-PLUTO-SDR/output/datos.txt
+
 with open("../ADALM-PLUTO-SDR/output/datos.txt", "r") as file:
     content = file.read()
 
-#print(content)
 archivo = open('../ADALM-PLUTO-SDR/configuration/debug_attr.txt', 'r')
-
-# Lee el contenido del archivo línea por línea
+rx_config = open('../ADALM-PLUTO-SDR/configuration/rx_config.txt', 'r')
+tx_config = open('../ADALM-PLUTO-SDR/configuration/tx_config.txt', 'r')
 lineas = archivo.readlines()
-
-# Cierra el archivo
 archivo.close()
 
+for i, linea in enumerate(rx_config):
+    rx = linea.split()
+    # Verificar si la línea contiene la palabra clave y el valor
+    if rx[0] == "sampling_frequency":
+        # Convertir el valor a entero y asignarlo a la variable
+        sampling_frequency = int(rx[1])
+    elif rx[0] == "frequency":
+        frequency = int(rx[1])
+#print("samples_frequency carrier_frequency",samples_frequency,carrier_frequency)
+samples_frequency = int(sampling_frequency)  # Convert to integer if needed
+carrier_frequency = int(frequency)  # Convert to float if needed
+
+# for i, tx in enumerate(tx_config):
+#     print(tx)
 
 #PRI = 2**15-1
 #amplitud = 4080# 2 ** 14
@@ -138,8 +149,8 @@ def plotSignal(signal_tx,signal_rx,max):
     medio = N /2 #max# int((2**18)/2) 
     #medio = int((2**18)/2) 
     #medio = PRI
-    mini = medio - 20000
-    maxim = medio + 20000
+    mini = medio - max
+    maxim = medio + max
 
     # Subplot 3 - Component in quadrature (first 1000 samples)
     ax3 = fig.add_subplot(2, 2, 3)
@@ -148,7 +159,7 @@ def plotSignal(signal_tx,signal_rx,max):
     ax3.plot(np.real(signal_tx),color="red", label = "transmitida TX")
     ax3.set_ylabel('Amplitude max[{}]'.format(np.real(signal_rx)[max]))
     
-    ax3.set_xlabel('samples')
+    ax3.set_xlabel('samples                                 samples_frequency{}Mhz carrier_frequency{}Ghz'.format(samples_frequency/1000000,carrier_frequency/1000000000))
     ax3.set_title('In-phase Component of the Signal_rx and tx (zoom centro)')
     ax3.grid()
     ax3.legend()
@@ -181,13 +192,11 @@ val_min = np.real(signal_rx)[min]
 # print("Posicion min:",min)
 # print("signal_rx:",len(signal_rx))
 
-#print("signal_rx:",len(signal_rx))
-plotSignal(signal_tx,signal_rx,max)
-
 
 #plotSignal(txSignal)
 min = 0
-max = 200000
+max = 20000
+plotSignal(signal_tx,signal_rx,max)
 
 #print(np.real(txSignal[10000:10000]))
 flag = 0
@@ -209,4 +218,4 @@ for i in np.real(signal_rx[min:max]):
 # with open("graph.html", "w") as f:
 #     f.write(html_content)
 
-print("FIN")
+#print("FIN")
